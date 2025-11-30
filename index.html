@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Rustic Spoon | Local Dining</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary: #d35400; /* Burnt Orange */
+            --secondary: #2c3e50; /* Dark Blue/Grey */
+            --light: #fdfbf7; /* Cream */
+            --dark: #1a1a1a;
+            --text-grey: #666;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- NAVIGATION --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.95);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .btn-reserve {
+            padding: 0.7rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: var(--transition);
+        }
+
+        .btn-reserve:hover { background: var(--secondary); transform: translateY(-2px); }
+
+        .hamburger {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.3s backwards;
+        }
+
+        .btn-hero {
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        .btn-hero:hover { background: white; color: var(--primary); }
+
+        /* --- ABOUT SECTION --- */
+        .section { padding: 5rem 5%; }
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-img {
+            position: relative;
+        }
+
+        .about-img img {
+            border-radius: 10px;
+            box-shadow: 20px 20px 0px var(--primary);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--secondary);
+        }
+
+        /* --- MENU SLIDER (UNIQUE) --- */
+        .menu-section { background: #f4f4f4; }
+        
+        .slider-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            padding: 1rem;
+        }
+
+        .menu-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            padding-bottom: 20px;
+            -ms-overflow-style: none; /* Hide scrollbar IE */
+            scrollbar-width: none; /* Hide scrollbar Firefox */
+        }
+
+        .menu-slider::-webkit-scrollbar { display: none; }
+
+        .menu-card {
+            min-width: 300px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .menu-card:hover { transform: translateY(-10px); }
+
+        .menu-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-info { padding: 1.5rem; }
+        .menu-info h3 { margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+        .price { color: var(--primary); font-weight: bold; }
+        
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--dark);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        /* --- FEATURES / ICONS --- */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .feature-box i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* --- CONTACT & FOOTER --- */
+        .contact-section {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-col h4 { margin-bottom: 1.5rem; font-size: 1.2rem; }
+        .footer-col ul li { margin-bottom: 0.8rem; }
+        .socials a { font-size: 1.2rem; margin-right: 15px; transition: var(--transition); }
+        .socials a:hover { color: var(--primary); }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        /* --- POPUP MODAL --- */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            max-width: 400px;
+            animation: zoomIn 0.4s ease;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes zoomIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .navbar .nav-links {
+                position: absolute;
+                top: 70px;
+                right: 0;
+                height: 100vh;
+                background: white;
+                flex-direction: column;
+                width: 70%;
+                align-items: center;
+                justify-content: center;
+                transform: translateX(100%);
+                transition: transform 0.3s ease-in-out;
+            }
+
+            .navbar .nav-links.active { transform: translateX(0); }
+            .hamburger { display: block; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-img img { box-shadow: 10px 10px 0px var(--primary); }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">The Rustic Spoon</div>
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact" class="btn-reserve">Book Table</a></li>
+        </ul>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Taste the Difference</h1>
+            <p>Authentic flavors, farm-fresh ingredients, and an unforgettable atmosphere.</p>
+            <button class="btn-hero" onclick="document.getElementById('menu').scrollIntoView()">View Menu</button>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="about-grid">
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Restaurant Interior">
+            </div>
+            <div class="about-text">
+                <h2>Our Story</h2>
+                <p>Welcome to <strong>The Rustic Spoon</strong>. Established in 2015, we believe that food brings people together. Our chefs use only the freshest organic ingredients sourced from local farmers to create Italian-inspired dishes with a modern twist.</p>
+                <br>
+                <p>Whether it's a romantic dinner or a family gathering, we promise an experience that delights all your senses.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background-color: #fdfbf7;">
+        <div class="features">
+            <div class="feature-box">
+                <i class="fas fa-carrot"></i>
+                <h3>Fresh Ingredients</h3>
+                <p>Farm to table daily.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-wine-glass-alt"></i>
+                <h3>Fine Wines</h3>
+                <p>Curated selection.</p>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-truck"></i>
+                <h3>Fast Delivery</h3>
+                <p>Hot to your doorstep.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="section menu-section">
+        <h2 class="section-title">Chef's Specials</h2>
+        
+        <div class="slider-container">
+            <div class="slider-btn prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
+            <div class="slider-btn next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
+
+            <div class="menu-slider" id="menuSlider">
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1574484284008-86d47dc7b905?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Pasta">
+                    <div class="menu-info">
+                        <h3>Truffle Pasta <span class="price">$18</span></h3>
+                        <p>Handmade tagliatelle with black truffle cream sauce.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Steak">
+                    <div class="menu-info">
+                        <h3>Grilled Ribeye <span class="price">$32</span></h3>
+                        <p>Aged beef served with roasted rosemary potatoes.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Pizza">
+                    <div class="menu-info">
+                        <h3>Margherita <span class="price">$15</span></h3>
+                        <p>San Marzano tomato sauce, mozzarella di bufala, basil.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cocktail">
+                    <div class="menu-info">
+                        <h3>Summer Spritz <span class="price">$12</span></h3>
+                        <p>Refreshing citrus blend with sparkling wine.</p>
+                    </div>
+                </div>
+                <div class="menu-card">
+                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Dessert">
+                    <div class="menu-info">
+                        <h3>Tiramisu <span class="price">$9</span></h3>
+                        <p>Classic Italian dessert with espresso and mascarpone.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+        <div class="footer-content">
+            <div class="footer-col">
+                <h4>The Rustic Spoon</h4>
+                <p>Experience the best dining in the city. Made with love, served with passion.</p>
+                <br>
+                <div class="socials">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Opening Hours</h4>
+                <ul>
+                    <li>Mon - Fri: 11am - 10pm</li>
+                    <li>Sat: 10am - 11pm</li>
+                    <li>Sun: Closed</li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 107501 street road Jabalpur </li>
+                    <li><i class="fas fa-phone"></i> (+91) 225698763</li>
+                    <li><i class="fas fa-envelope"></i> hello@rusticspoon.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Satyadarshi Rout . All Rights Reserved. Designed for Excellence.</p>
+        </div>
+    </section>
+
+    <div class="popup-overlay" id="popup">
+        <div class="popup-content">
+            <span class="close-popup" id="closePopup">&times;</span>
+            <h2 style="color: var(--primary);">Special Offer!</h2>
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" style="margin: 15px auto; border-radius: 8px;" alt="Food">
+            <p>Get <strong>20% OFF</strong> your first order when you subscribe to our newsletter!</p>
+            <input type="email" placeholder="Enter your email" style="padding: 10px; width: 80%; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px;">
+            <button class="btn-reserve" style="width: 80%; border: none; cursor: pointer;">Get Coupon</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('nav-links');
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // 2. Menu Slider Logic
+        const slider = document.getElementById('menuSlider');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+
+        nextBtn.addEventListener('click', () => {
+            slider.scrollBy({ left: 320, behavior: 'smooth' });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            slider.scrollBy({ left: -320, behavior: 'smooth' });
+        });
+
+        // 3. Popup Logic
+        const popup = document.getElementById('popup');
+        const closePopup = document.getElementById('closePopup');
+
+        // Show popup after 3 seconds
+        window.onload = function() {
+            setTimeout(() => {
+                popup.style.display = 'flex';
+            }, 3000);
+        };
+
+        closePopup.addEventListener('click', () => {
+            popup.style.display = 'none';
+        });
+
+        // Close popup if clicked outside content
+        window.onclick = function(event) {
+            if (event.target == popup) {
+                popup.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
